@@ -193,20 +193,19 @@ def dlModel(x_train,y_train,x_test,y_test,x_valid,y_valid):     # This function 
         #print(f"Model dosyası zaten mevcut. dlPredict() fonksiyonunu kullanabilirsiniz.")
         pass
     else:
-        #sequential ve dense kullanarak(diğerleri de olabilir) derin öğrenme modeli oluştur
         model = Sequential()
-        #model.add(Dense(7, activation='relu', input_shape=(x_train.shape[1],)))
-        model.add(Dense(32,activation='relu'))
+        # model.add(Dense(7, activation='relu', input_shape=(x_train.shape[1],)))
+        model.add(Dense(64, activation='relu'))
         model.add(Dropout(0.5))
-        model.add(Dense(32, activation='relu'))
+        model.add(Dense(64, activation='relu'))
         model.add(Dropout(0.5))
-        model.add(Dense(32, activation='relu'))
+        model.add(Dense(64, activation='relu'))
         model.add(Dropout(0.5))
         model.add(Dense(1, activation='sigmoid'))
         model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
         # Early stopping için callback oluştur
         early_stopping = EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)
-        model.fit(x_train, y_train, batch_size=32, epochs=20, validation_data=(x_valid, y_valid), callbacks=[early_stopping], initial_epoch=0)
+        model.fit(x_train, y_train, batch_size=64, epochs=20, validation_data=(x_valid, y_valid),callbacks=[early_stopping], initial_epoch=0)
         # Modelin performansını değerlendirme
         loss, accuracy = model.evaluate(x_test, y_test)
         print(f"Test veri kümesi üzerinde kayıp (loss): {loss}")
@@ -241,7 +240,6 @@ def dlModel_2(x_train,y_train,x_test,y_test,x_valid,y_valid):   # This function 
         #print(f"Model dosyası zaten mevcut. dlPredict() fonksiyonunu kullanabilirsiniz.")
         pass
     else:
-        #sequential ve dense kullanarak(diğerleri de olabilir) derin öğrenme modeli oluştur
         model = Sequential()
         #model.add(Dense(32, activation='relu', input_shape=(x_train.shape[1],)))
         model.add(Dense(32, activation='relu'))
