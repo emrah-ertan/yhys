@@ -52,21 +52,27 @@ Yapılan testler sonucunda, vektörizasyon yöntemlerinin yapay zeka algoritmala
 
 Bu verilere ek olarak, FastText ve Doc2Vec yöntemleri ile eğitilen derin sinir ağı modeli yaklaşık olarak 0.78 ve 0.82 doğruluk değerlerinde kalmışlardır. Bu sebepten dolayı 'Tfidf' ve 'Count Vectorizer' vektörleştirme yöntemlerinin kullanımı daha doğrudur. Ayrıca eğitim sonucunda ortaya çıkan 'confusion matrix' değerleri aşağıdaki gibidir:
 
+**Logistic Regression**
 ![logistic regression](img/tfidf_lr.png)
 ![logistic regression](img/cv_lr.png)
 
+**Naive Bayes**
 ![logistic regression](img/tfidf_nb.png)
 ![logistic regression](img/cv_nb.png)
 
+**Random Forest**
 ![logistic regression](img/tfidf_rf.png)
 ![logistic regression](img/cv_rf.png)
 
+**Support Vector Machine**
 ![logistic regression](img/tfidf_svm.png)
 ![logistic regression](img/cv_svm.png)
 
+**Decision Tree**
 ![logistic regression](img/tfidf_dt.png)
 ![logistic regression](img/cv_dt.png)
 
+**Deep Learning**
 ![logistic regression](img/tfidf_dl.png)
 ![logistic regression](img/cv_dl.png)
 
