@@ -55,8 +55,8 @@ Bu verilere ek olarak, FastText ve Doc2Vec yöntemleri ile eğitilen derin sinir
 **Logistic Regression**
 
 <p float="left">
-  <img src="img/tfidf_lr.png" width="100" />
-  <img src="img/cv_lr.png" width="100" />
+  <img src="img/tfidf_lr.png" width="450" />
+  <img src="img/cv_lr.png" width="450" />
 </p>
 
 **Naive Bayes**
