@@ -10,25 +10,29 @@ from sklearn.preprocessing import StandardScaler
 # CONTROL FOR CRUDE, CLEAN, NORMAL, PROCESSED DATASETS and PROCESSING DATASETS
 if os.path.exists("datasets/processed/train.csv") and os.path.exists("datasets/processed/test.csv") and os.path.exists(
         "datasets/processed/valid.csv"):
-    print("Crude Dataset already exists")
+    #print("Crude Dataset already exists")
+    pass
 else:
     print("No Processed Dataset found, being processed...")
     Process.processDataset()
 if os.path.exists("datasets/processed/clean_train.csv") and os.path.exists(
         "datasets/processed/clean_test.csv") and os.path.exists("datasets/processed/clean_valid.csv"):
-    print("Clear Dataset already exists")
+    #print("Clear Dataset already exists")
+    pass
 else:
     print("No Cleaned Dataset found, being cleaned...")
     Process.processData()
 if os.path.exists("datasets/processed/normal_train.csv") and os.path.exists(
         "datasets/processed/normal_test.csv") and os.path.exists("datasets/processed/normal_valid.csv"):
-    print("Normalized Dataset already exists")
+    #print("Normalized Dataset already exists")
+    pass
 else:
     print("No Normalized Dataset found, being normalized...")
     Process.normalizeData()
 if os.path.exists("datasets/processed/processed_train.csv") and os.path.exists(
         "datasets/processed/processed_test.csv") and os.path.exists("datasets/processed/processed_valid.csv"):
-    print("Processed Dataset already exists. It's ready for train.")
+    #print("Processed Dataset already exists. It's ready for train.")
+    pass
 else:
     print("No Processed Dataset found, Stem finding process being...")
     Process.stemmingData()
@@ -189,8 +193,12 @@ def vectorization_menu(x_train, x_test, x_valid):
         x_train, x_test, x_valid = change_shape(x_train, x_test, x_valid)
     elif choice == "5":
         # Vectorize the text contents with Pretrained FastText
-        x_train, x_test, x_valid = FeatureExtraction.vectorize_FastText_Pretrained(x_train, x_test, x_valid)
-        x_train, x_test, x_valid = change_shape(x_train, x_test, x_valid)
+        if os.path.exists("D:/NLP_Models/cc.tr.300.bin"):
+            x_train, x_test, x_valid = FeatureExtraction.vectorize_FastText_Pretrained(x_train, x_test, x_valid)
+            x_train, x_test, x_valid = change_shape(x_train, x_test, x_valid)
+        else:
+            print("\033[91mPretrained fasttext model doesn't exist. Please choose another option!\033[0m")
+            x_train, x_test,x_valid, choice = vectorization_menu(x_train,x_test,x_valid)
     else:
         print("Invalid choice. Please select a valid option.")
         x_train, x_test,x_valid, choice = vectorization_menu(x_train,x_test,x_valid)
@@ -207,8 +215,8 @@ def train_menu(x_train, y_train, x_test, y_test, x_valid, y_valid):
     print("4. Support Vector Machine")
     print("5. Decision Tree")
     print("6. Deep Learning")
-    print("7. Deep Learning 2 (For FastText and Doc2Vec vectors)")
-    print("8. Deep Learning with LSTM (DL-LSTM)")
+    #print("7. Deep Learning 2 (For FastText and Doc2Vec vectors)")
+    #print("8. Deep Learning with LSTM (DL-LSTM)")
     choice = input("Enter your choice: ")
 
     if choice == "1":
@@ -229,14 +237,14 @@ def train_menu(x_train, y_train, x_test, y_test, x_valid, y_valid):
     elif choice == "6":
         # Train a deep learning model
         Model.dlModel(x_train, y_train, x_test, y_test, x_valid, y_valid)
-    elif choice == "7":
-        Model.dlModel_2(x_train, y_train, x_test, y_test, x_valid, y_valid)
-    elif choice == "8":
-        # Train a deep learning model with LSTM
-        Model.dlModel_LSTM(x_train, y_train, x_test, y_test, x_valid, y_valid)
     else:
         print("Invalid choice. Please select a valid option.")
         choice = train_menu(x_train,y_train,x_test,y_test,x_valid,y_valid)
+    """""elif choice == "7":
+            Model.dlModel_2(x_train, y_train, x_test, y_test, x_valid, y_valid)
+        elif choice == "8":
+            # Train a deep learning model with LSTM
+            Model.dlModel_LSTM(x_train, y_train, x_test, y_test, x_valid, y_valid)"""""
     return choice
 
 
@@ -253,10 +261,10 @@ def prediction_menu(review_vector,model_choice):
         Model.dtPredict(review_vector)
     elif (model_choice == "6"):
         Model.dlPredict(review_vector)
-    elif (model_choice == "7"):
+    """""elif (model_choice == "7"):
         Model.dlPredict_2(review_vector)
     elif (model_choice == "8"):
-        Model.dlPredict_LSTM(review_vector)
+        Model.dlPredict_LSTM(review_vector)"""""
 
 
 

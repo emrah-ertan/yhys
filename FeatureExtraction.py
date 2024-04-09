@@ -125,9 +125,9 @@ def vectorizeFastText_Transform(review):
 
 
 
-
-model_path = "D:/NLP_Models/cc.tr.300.bin"
-#model = FastText.load_fasttext_format(model_path)
+if os.path.exists("D:/NLP_Models/cc.tr.300.bin"):
+    model_path = "D:/NLP_Models/cc.tr.300.bin"
+    model = FastText.load_fasttext_format(model_path)
 def vectorize_FastText_Pretrained(x_train, x_test, x_valid):
 
     # Vectorize x_train

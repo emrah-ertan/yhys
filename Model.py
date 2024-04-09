@@ -13,6 +13,8 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 
+import Visualize
+
 
 #logistic regression model for tfidif and cv vectors
 def lrModel(x_train,y_train,x_test,y_test):
@@ -28,6 +30,7 @@ def lrModel(x_train,y_train,x_test,y_test):
         cm = confusion_matrix(y_test,y_pred)
         print("Confusion Matrix:")
         print(cm)
+        Visualize.showConfusionMatrix(cm)
         accuracy = accuracy_score(y_test, y_pred)
         print("Accuracy of Model:", accuracy)
 
@@ -59,12 +62,12 @@ def nbModel(x_train, y_train, x_test, y_test):
         cm = confusion_matrix(y_test, y_pred)
         print("Confusion Matrix:")
         print(cm)
+        Visualize.showConfusionMatrix(cm)
         accuracy = accuracy_score(y_test, y_pred)
         print("Accuracy of Model:", accuracy)
 
         with open('models/NaiveBayesModel.pkl', 'wb') as f:
             pickle.dump(model, f)
-
 def nbPredict(review_vector):
     with open('models/NaiveBayesModel.pkl', 'rb') as f:
         model = pickle.load(f)
@@ -92,6 +95,7 @@ def rfModel(x_train, y_train, x_test, y_test):
         cm = confusion_matrix(y_test, y_pred)
         print("Confusion Matrix:")
         print(cm)
+        Visualize.showConfusionMatrix(cm)
         accuracy = accuracy_score(y_test, y_pred)
         print("Accuracy of Model:", accuracy)
 
@@ -125,6 +129,7 @@ def svmModel(x_train, y_train, x_test, y_test):
         cm = confusion_matrix(y_test, y_pred)
         print("Confusion Matrix:")
         print(cm)
+        Visualize.showConfusionMatrix(cm)
         accuracy = accuracy_score(y_test, y_pred)
         print("Accuracy of Model:", accuracy)
 
@@ -159,6 +164,7 @@ def dtModel(x_train, y_train, x_test, y_test):
         cm = confusion_matrix(y_test, y_pred)
         print("Confusion Matrix:")
         print(cm)
+        Visualize.showConfusionMatrix(cm)
         accuracy = accuracy_score(y_test, y_pred)
         print("Accuracy of Model:", accuracy)
 
@@ -183,20 +189,23 @@ def dtPredict(review_vector):
 
 #Deep learning model for tfidf and cv vectors. Write the name of the vectorization method at the end of the model name
 def dlModel(x_train,y_train,x_test,y_test,x_valid,y_valid):     # This function be able to use with tfidf and count vectorizer vectors
-    if os.path.exists("models/DeepLearningModel_CV.keras"):
+    if os.path.exists("models/DeepLearningModel_1.keras"):
         #print(f"Model dosyası zaten mevcut. dlPredict() fonksiyonunu kullanabilirsiniz.")
         pass
     else:
         #sequential ve dense kullanarak(diğerleri de olabilir) derin öğrenme modeli oluştur
         model = Sequential()
-        model.add(Dense(7, activation='relu', input_shape=(x_train.shape[1],)))
+        #model.add(Dense(7, activation='relu', input_shape=(x_train.shape[1],)))
+        model.add(Dense(32,activation='relu'))
         model.add(Dropout(0.5))
-        model.add(Dense(7, activation='relu'))
+        model.add(Dense(32, activation='relu'))
+        model.add(Dropout(0.5))
+        model.add(Dense(32, activation='relu'))
         model.add(Dropout(0.5))
         model.add(Dense(1, activation='sigmoid'))
         model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
         # Early stopping için callback oluştur
-        early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+        early_stopping = EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)
         model.fit(x_train, y_train, batch_size=32, epochs=20, validation_data=(x_valid, y_valid), callbacks=[early_stopping], initial_epoch=0)
         # Modelin performansını değerlendirme
         loss, accuracy = model.evaluate(x_test, y_test)
@@ -207,10 +216,11 @@ def dlModel(x_train,y_train,x_test,y_test,x_valid,y_valid):     # This function 
         cm = confusion_matrix(y_test,y_pred)
         print(f"Confusion Matrix: ")
         print(cm)
-        model.save("models/DeepLearningModel_CV.keras")
+        Visualize.showConfusionMatrix(cm)
+        model.save("models/DeepLearningModel_1.keras")
 def dlPredict(review_vector):
     try:
-        model = load_model("models/DeepLearningModel_CV.keras")
+        model = load_model("models/DeepLearningModel_1.keras")
         prediction = model.predict(review_vector)
         prediction = 1 if prediction >= 0.5 else 0
         if prediction == 1:
@@ -227,7 +237,7 @@ def dlPredict(review_vector):
 
 #deep learning model for fasttext and doc2vec vectors
 def dlModel_2(x_train,y_train,x_test,y_test,x_valid,y_valid):   # This function be able to use with doc2vec and fasttext vectors
-    if os.path.exists("models/DeepLearningModelFastText.keras"):
+    if os.path.exists("models/DeepLearningModel_2.keras"):
         #print(f"Model dosyası zaten mevcut. dlPredict() fonksiyonunu kullanabilirsiniz.")
         pass
     else:
@@ -254,10 +264,11 @@ def dlModel_2(x_train,y_train,x_test,y_test,x_valid,y_valid):   # This function 
         cm = confusion_matrix(y_test,y_pred)
         print(f"Confusion Matrix: ")
         print(cm)
-        model.save("models/DeepLearningModelFastText.keras")
+        Visualize.showConfusionMatrix(cm)
+        model.save("models/DeepLearningModel_2.keras")
 def dlPredict_2(review_vector):
     try:
-        model = load_model("models/DeepLearningModelFastText.keras")
+        model = load_model("models/DeepLearningModel_2.keras")
         prediction = model.predict(review_vector)
         prediction = 1 if prediction >= 0.5 else 0
         if prediction == 1:
@@ -300,6 +311,7 @@ def dlModel_LSTM(x_train,y_train,x_test,y_test,x_valid,y_valid):
         cm = confusion_matrix(y_test, y_pred)
         print(f"Confusion Matrix: ")
         print(cm)
+        Visualize.showConfusionMatrix(cm)
         model.save("models/DeepLearningModel_LSTM.keras")
 def dlPredict_LSTM(review_vector):
     try:
