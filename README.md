@@ -10,7 +10,7 @@
 
 Günümüzde sosyal medya uygulamalarının yaygın şekilde kullanımı, insanların birbirleri ile olan etkileşimini fazlasıyla artırmış durumdadır. Bu durum iyiye kullanıldığında oldukça güzel gelişmelere sebebiyet verebilirken, maalesef bu durum kötüye kullanıldığında insanlar üzerinde zannedilenden çok daha olumsuz sonuçlar doğurabilmektedir. İnsanların psikolojik sağlıklarını olumsuz etkileyebilecek şekilde yapılan yorumlar toplum yapısına da zarar vermektedir. Bu durumların önüne geçilebilmesi amacıyla projemde bu sorunu çözmek adına makine öğrenmesi algoritmaları ve derin sinir ağları modeli kullanarak metinlerde siber zorbalık tespiti yapmayı amaçladım.
 
-## Kullanılan Teknolojiler
+Proje için kullanılan teknolojiler aşağıdaki gibidir:
 
 - Python
 - PyCharm
