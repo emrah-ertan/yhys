@@ -53,31 +53,40 @@ Yapılan testler sonucunda, vektörizasyon yöntemlerinin yapay zeka algoritmala
 Bu verilere ek olarak, FastText ve Doc2Vec yöntemleri ile eğitilen derin sinir ağı modeli yaklaşık olarak 0.78 ve 0.82 doğruluk değerlerinde kalmışlardır. Bu sebepten dolayı 'Tfidf' ve 'Count Vectorizer' vektörleştirme yöntemlerinin kullanımı daha doğrudur. Ayrıca eğitim sonucunda ortaya çıkan 'confusion matrix' değerleri aşağıdaki gibidir:
 
 **Logistic Regression**
-
 <p float="left">
   <img src="img/tfidf_lr.png" width="450" />
   <img src="img/cv_lr.png" width="450" />
 </p>
 
 **Naive Bayes**
-![logistic regression](img/tfidf_nb.png)
-![logistic regression](img/cv_nb.png)
+<p float="left">
+  <img src="img/tfidf_nb.png" width="450" />
+  <img src="img/cv_nb.png" width="450" />
+</p>
 
 **Random Forest**
-![logistic regression](img/tfidf_rf.png)
-![logistic regression](img/cv_rf.png)
+<p float="left">
+  <img src="img/tfidf_rf.png" width="450" />
+  <img src="img/cv_rf.png" width="450" />
+</p>
 
 **Support Vector Machine**
-![logistic regression](img/tfidf_svm.png)
-![logistic regression](img/cv_svm.png)
+<p float="left">
+  <img src="img/tfidf_svm.png" width="450" />
+  <img src="img/cv_svm.png" width="450" />
+</p>
 
 **Decision Tree**
-![logistic regression](img/tfidf_dt.png)
-![logistic regression](img/cv_dt.png)
+<p float="left">
+  <img src="img/tfidf_dt.png" width="450" />
+  <img src="img/cv_dt.png" width="450" />
+</p>
 
 **Deep Learning**
-![logistic regression](img/tfidf_dl.png)
-![logistic regression](img/cv_dl.png)
+<p float="left">
+  <img src="img/tfidf_dl.png" width="450" />
+  <img src="img/cv_dl.png" width="450" />
+</p>
 
 ## SONUÇ
 
