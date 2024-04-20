@@ -295,11 +295,13 @@ def dlModel_LSTM(x_train,y_train,x_test,y_test,x_valid,y_valid):
         x_test = np.reshape(x_test, (x_test.shape[0], 1, x_test.shape[1]))
 
         model = Sequential()
-        model.add(LSTM(units=32,activation='relu'))
+        model.add(LSTM(32, recurrent_dropout=0.3, return_sequences=True))
+        model.add(LSTM(32, recurrent_dropout=0.3, return_sequences=True))
+        model.add(LSTM(32, recurrent_dropout=0.3))
         model.add(Dense(units=1, activation='sigmoid'))
-        early_stopping = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+        early_stopping = EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)
         model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-        model.fit(x_train, y_train, epochs=10, batch_size=64, validation_data=(x_valid, y_valid), callbacks=[early_stopping])
+        model.fit(x_train, y_train, epochs=20, batch_size=64, validation_data=(x_valid, y_valid), callbacks=[early_stopping])
 
         loss, accuracy = model.evaluate(x_test, y_test)
         print(f"Test veri kümesi üzerinde kayıp (loss): {loss}")

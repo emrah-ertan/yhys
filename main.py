@@ -5,7 +5,6 @@ import FeatureExtraction
 import Model
 import os
 from scipy.sparse import csr_matrix
-from sklearn.preprocessing import StandardScaler
 
 # CONTROL FOR CRUDE, CLEAN, NORMAL, PROCESSED DATASETS and PROCESSING DATASETS
 if os.path.exists("datasets/processed/train.csv") and os.path.exists("datasets/processed/test.csv") and os.path.exists(
@@ -92,14 +91,6 @@ def main_menu(x_train,x_test,x_valid,y_train,y_test,y_valid):
     #VECTORIZATION : Feature Extraction
     x_train, x_test, x_valid, vectorization_method_choice = vectorization_menu(x_train, x_test, x_valid)
 
-    """""
-    #SCALING : Worse 
-    sc = StandardScaler(with_mean=False)
-    sc.fit_transform(x_train)
-    x_train = sc.transform(x_train)
-    x_test = sc.transform(x_test)
-    x_valid = sc.transform(x_valid)
-    """""
 
     #TRAINING
     model_choice = train_menu(x_train, y_train, x_test, y_test, x_valid, y_valid)
@@ -215,8 +206,8 @@ def train_menu(x_train, y_train, x_test, y_test, x_valid, y_valid):
     print("4. Support Vector Machine")
     print("5. Decision Tree")
     print("6. Deep Learning")
-    #print("7. Deep Learning 2 (For FastText and Doc2Vec vectors)")
-    #print("8. Deep Learning with LSTM (DL-LSTM)")
+    print("7. LSTM")
+    #print("8. Deep Learning 2 (For FastText and Doc2Vec vectors)")
     choice = input("Enter your choice: ")
 
     if choice == "1":
@@ -237,14 +228,14 @@ def train_menu(x_train, y_train, x_test, y_test, x_valid, y_valid):
     elif choice == "6":
         # Train a deep learning model
         Model.dlModel(x_train, y_train, x_test, y_test, x_valid, y_valid)
+    elif choice == "7":
+        Model.dlModel_LSTM(x_train, y_train, x_test, y_test, x_valid, y_valid)
     else:
         print("Invalid choice. Please select a valid option.")
         choice = train_menu(x_train,y_train,x_test,y_test,x_valid,y_valid)
-    """""elif choice == "7":
-            Model.dlModel_2(x_train, y_train, x_test, y_test, x_valid, y_valid)
-        elif choice == "8":
-            # Train a deep learning model with LSTM
-            Model.dlModel_LSTM(x_train, y_train, x_test, y_test, x_valid, y_valid)"""""
+        """""elif choice == "8":
+            # Train a deep learning 2 model
+            Model.dlModel_2(x_train, y_train, x_test, y_test, x_valid, y_valid)"""""
     return choice
 
 
@@ -261,10 +252,10 @@ def prediction_menu(review_vector,model_choice):
         Model.dtPredict(review_vector)
     elif (model_choice == "6"):
         Model.dlPredict(review_vector)
-    """""elif (model_choice == "7"):
-        Model.dlPredict_2(review_vector)
-    elif (model_choice == "8"):
-        Model.dlPredict_LSTM(review_vector)"""""
+    elif (model_choice == "7"):
+        Model.dlPredict_LSTM(review_vector)
+    """""elif (model_choice == "8"):
+        Model.dlPredict_2(review_vector)"""""
 
 
 
