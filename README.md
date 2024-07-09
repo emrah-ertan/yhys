@@ -193,8 +193,9 @@ In addition to these results, the deep neural network model trained with the Fas
 </p>
 
 **LSTM**
-![LSTM](img/cm_lstm.png)
-
+<p float="left">
+  <img src="img/cm_lstm.png width="450" />
+</p>
 
 ## Conclusion
 
