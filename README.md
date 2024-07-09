@@ -50,7 +50,7 @@ Yapılan testler sonucunda, vektörizasyon yöntemlerinin yapay zeka algoritmala
 ![Tfidf Accuracy](img/Figure_1.png)
 ![Count Vectorizer Accuracy](img/Figure_2.png)
 
-Bu verilere ek olarak, FastText ve Doc2Vec yöntemleri ile eğitilen derin sinir ağı modeli yaklaşık olarak 0.78 ve 0.82 doğruluk değerlerinde kalmışlardır. Bu sebepten dolayı 'Tfidf' ve 'Count Vectorizer' vektörleştirme yöntemlerinin kullanımı daha doğrudur. Ayrıca eğitim sonucunda ortaya çıkan 'confusion matrix' değerleri aşağıdaki gibidir:
+Bu verilere ek olarak, FastText ve Doc2Vec yöntemleri ile eğitilen derin sinir ağı modeli yaklaşık olarak 0.78 ve 0.82 doğruluk değerlerinde kalmışlardır. Bu sebepten dolayı 'Tfidf' ve 'Count Vectorizer' vektörleştirme yöntemlerinin kullanımı daha doğrudur. Ayrıca eğitim sonucunda ortaya çıkan 'confusion matrix' değerleri aşağıdaki gibidir (LSTM için vektörleştirme Embedding katmanı ile gerçekleştirilmiştir):
 
 **Logistic Regression**
 <p float="left">
@@ -88,6 +88,10 @@ Bu verilere ek olarak, FastText ve Doc2Vec yöntemleri ile eğitilen derin sinir
   <img src="img/cv_dl.png" width="450" />
 </p>
 
+**LSTM**
+<p float="left">
+  <img src="img/cm_lstm.png width="450" />
+</p>
 ## SONUÇ
 
 Siber zorbalığın ve saldırgan yorumların sosyal medya gibi ortamlarda çok fazla görüldüğü bu günlerde, bu gibi istenmeyen durumların tespit edilebilmesini kolaylaştırmak amacıyla çeşitli yöntemler karşılaştırılmıştır. Oluşturulan derin öğrenme modeli %90 üzerinde doğruluk değeri göstermektedir.
