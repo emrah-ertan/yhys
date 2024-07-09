@@ -90,7 +90,7 @@ Bu verilere ek olarak, FastText ve Doc2Vec yöntemleri ile eğitilen derin sinir
 
 **LSTM**
 <p float="left">
-  <img src="img/cm_lstm.png />
+  <img src="img/cm_lstm.png" width="450" />
 </p>
 
 ## SONUÇ
@@ -194,7 +194,7 @@ In addition to these results, the deep neural network model trained with the Fas
 
 **LSTM**
 <p float="left">
-  <img src="img/cm_lstm.png />
+  <img src="img/cm_lstm.png" width="450" />
 </p>
 
 ## Conclusion
