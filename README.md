@@ -92,6 +92,7 @@ Bu verilere ek olarak, FastText ve Doc2Vec yöntemleri ile eğitilen derin sinir
 <p float="left">
   <img src="img/cm_lstm.png width="450" />
 </p>
+
 ## SONUÇ
 
 Siber zorbalığın ve saldırgan yorumların sosyal medya gibi ortamlarda çok fazla görüldüğü bu günlerde, bu gibi istenmeyen durumların tespit edilebilmesini kolaylaştırmak amacıyla çeşitli yöntemler karşılaştırılmıştır. Oluşturulan derin öğrenme modeli %90 üzerinde doğruluk değeri göstermektedir.
@@ -153,7 +154,7 @@ As a result of the tests conducted, the performances of the vectorization method
 ![Tfidf Accuracy](img/Figure_1.png)
 ![Count Vectorizer Accuracy](img/Figure_2.png)
 
-In addition to these results, the deep neural network model trained with the FastText and Doc2Vec methods remained at approximately 0.78 and 0.82 accuracy values, respectively. Therefore, the use of 'Tfidf' and 'Count Vectorizer' vectorization methods is more accurate. Additionally, the 'confusion matrix' values obtained after the training are as follows:
+In addition to these results, the deep neural network model trained with the FastText and Doc2Vec methods remained at approximately 0.78 and 0.82 accuracy values, respectively. Therefore, the use of 'Tfidf' and 'Count Vectorizer' vectorization methods is more accurate. Additionally, the 'confusion matrix' values obtained after the training are as follows (Vectorization for LSTM was implemented with the Embedding layer):
 
 **Logistic Regression**
 <p float="left">
@@ -189,6 +190,11 @@ In addition to these results, the deep neural network model trained with the Fas
 <p float="left">
   <img src="img/tfidf_dl.png" width="450" />
   <img src="img/cv_dl.png" width="450" />
+</p>
+
+**LSTM**
+<p float="left">
+  <img src="img/cm_lstm.png width="450" />
 </p>
 
 ## Conclusion
