@@ -53,26 +53,8 @@ df_valid = df_valid.dropna()
 x_valid = df_valid["text"].values
 y_valid = df_valid["label"].values
 
-"""""control_train = x_train.copy()
-control_test = x_test.copy()
-control_valid = x_valid.copy()
-print(f"First read : {x_train.shape}")
-control_train, control_test, control_valid = FeatureExtraction.vectorizeTfidf(control_train,control_test,control_valid) #vectorize the text contents with tfidf vectorizer
-print(f"After tfidf: {control_train.shape}")
-#print(f"control_train: {control_train}")
-#print(f"control_test: {control_test}")
-print(type(control_train))
-print(control_train[0])
 
-x_train, x_test, x_valid = FeatureExtraction.vectorizeFastText(x_train,x_test,x_valid)
-x_train = np.array(x_train)
-x_test = np.array(x_test)
-x_valid = np.array(x_valid)
-print(f"After doc2vec: {x_train.shape}")
-#print(f"x_train: {x_train}")
-#print(f"x_test: {x_test}")
-print(type(x_train))
-print(x_train[0])"""""
+x_train_lstm, x_test_lstm, x_valid_lstm,y_train_lstm,y_test_lstm,y_valid_lstm = x_train.copy(), x_test.copy(),x_valid.copy(),y_train.copy(),y_test.copy(),y_valid.copy()
 
 def welcome():
     print("""
@@ -84,6 +66,17 @@ def welcome():
     ****    |_|/_/   \_\|_|  |_|   |_|/_/   \_\|____/   ****
     """)
 
+def demo_lstm(x_train,x_test,x_valid,y_train,y_test,y_valid):
+    x_train = x_train.tolist()
+    y_train= y_train.tolist()
+    x_test= x_test.tolist()
+    y_test= y_test.tolist()
+    x_valid= x_valid.tolist()
+    y_valid= y_valid.tolist()
+    Model.train_LSTM(x_train,y_train,x_test,y_test,x_valid,y_valid)
+
+def predict_demo_lstm(user_review):
+    Model.predict_LSTM(user_review)
 
 def main_menu(x_train,x_test,x_valid,y_train,y_test,y_valid):
     print("________________________________")
@@ -99,16 +92,17 @@ def main_menu(x_train,x_test,x_valid,y_train,y_test,y_valid):
     print("3. Predict with Trained Model")
     review = [input("Review:")]
     review = Process.processUserReview(review)
+    review_for_lstm = review
     if (vectorization_method_choice == "1"):
         while not (review[0] == "" or review[0].isspace()):
             review_vector = FeatureExtraction.vectorizeTfidf_Transform(review)         #Tfidf transform
-            prediction_menu(review_vector,model_choice)
+            prediction_menu(review_vector,model_choice,review)
             review = [input("Review:")]
             review = Process.processUserReview(review)
     elif (vectorization_method_choice == "2"):
         while not (review[0] == "" or review[0].isspace()):
             review_vector = FeatureExtraction.vectorizeCV_Transform(review)            #Count vectorizer transform
-            prediction_menu(review_vector, model_choice)
+            prediction_menu(review_vector, model_choice,review)
             review = [input("Review:")]
             review = Process.processUserReview(review)
     elif (vectorization_method_choice == "3"):
@@ -117,7 +111,7 @@ def main_menu(x_train,x_test,x_valid,y_train,y_test,y_valid):
             # Use this code if you using FastText or Doc2Vec for vectorization
             review_vector = np.array(review_vector)
             review_vector = csr_matrix(review_vector)
-            prediction_menu(review_vector, model_choice)
+            prediction_menu(review_vector, model_choice,review)
             review = [input("Review:")]
             review = Process.processUserReview(review)
     elif (vectorization_method_choice == "4"):
@@ -126,7 +120,7 @@ def main_menu(x_train,x_test,x_valid,y_train,y_test,y_valid):
             # Use this code if you using FastText or Doc2Vec for vectorization
             review_vector = np.array(review_vector)
             review_vector = csr_matrix(review_vector)
-            prediction_menu(review_vector, model_choice)
+            prediction_menu(review_vector, model_choice,review)
             review = [input("Review:")]
             review = Process.processUserReview(review)
     elif (vectorization_method_choice == "5"):
@@ -135,7 +129,7 @@ def main_menu(x_train,x_test,x_valid,y_train,y_test,y_valid):
             # Use this code if you using FastText or Doc2Vec for vectorization
             review_vector = np.array(review_vector)
             review_vector = csr_matrix(review_vector)
-            prediction_menu(review_vector, model_choice)
+            prediction_menu(review_vector, model_choice,review)
             review = [input("Review:")]
             review = Process.processUserReview(review)
     else:
@@ -229,7 +223,7 @@ def train_menu(x_train, y_train, x_test, y_test, x_valid, y_valid):
         # Train a deep learning model
         Model.dlModel(x_train, y_train, x_test, y_test, x_valid, y_valid)
     elif choice == "7":
-        Model.dlModel_LSTM(x_train, y_train, x_test, y_test, x_valid, y_valid)
+        demo_lstm(x_train_lstm, x_test_lstm, x_valid_lstm,y_train_lstm,y_test_lstm,y_valid_lstm)
     else:
         print("Invalid choice. Please select a valid option.")
         choice = train_menu(x_train,y_train,x_test,y_test,x_valid,y_valid)
@@ -239,7 +233,7 @@ def train_menu(x_train, y_train, x_test, y_test, x_valid, y_valid):
     return choice
 
 
-def prediction_menu(review_vector,model_choice):
+def prediction_menu(review_vector,model_choice,review):
     if(model_choice == "1"):
         Model.lrPredict(review_vector)
     elif(model_choice == "2"):
@@ -253,7 +247,7 @@ def prediction_menu(review_vector,model_choice):
     elif (model_choice == "6"):
         Model.dlPredict(review_vector)
     elif (model_choice == "7"):
-        Model.dlPredict_LSTM(review_vector)
+        predict_demo_lstm(review)
     """""elif (model_choice == "8"):
         Model.dlPredict_2(review_vector)"""""
 

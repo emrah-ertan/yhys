@@ -5,10 +5,14 @@ import numpy as np
 from keras import Sequential
 from keras.models import load_model
 from keras.callbacks import EarlyStopping
-from keras.layers import LSTM, Dense, Dropout
+from keras.layers import LSTM, Dense, Dropout, Bidirectional
+from keras.src.layers import Embedding, SpatialDropout1D
+from keras.src.preprocessing.text import Tokenizer
+from keras.src.utils import pad_sequences
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix, accuracy_score
+from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
@@ -294,14 +298,20 @@ def dlModel_LSTM(x_train,y_train,x_test,y_test,x_valid,y_valid):
         x_valid = np.reshape(x_valid, (x_valid.shape[0], 1, x_valid.shape[1]))
         x_test = np.reshape(x_test, (x_test.shape[0], 1, x_test.shape[1]))
 
+        x_train = np.squeeze(x_train, axis=1)
+        x_test = np.squeeze(x_test, axis=1)
+        x_valid = np.squeeze(x_valid, axis=1)
+
         model = Sequential()
-        model.add(LSTM(32, recurrent_dropout=0.3, return_sequences=True))
-        model.add(LSTM(32, recurrent_dropout=0.3, return_sequences=True))
-        model.add(LSTM(32, recurrent_dropout=0.3))
+        model.add(Embedding(input_dim=5000, output_dim=100, input_length=100))
+        #model.add(LSTM(32, recurrent_dropout=0.3, return_sequences=True))
+        #model.add(LSTM(32, recurrent_dropout=0.3, return_sequences=True))
+        #model.add(LSTM(32, recurrent_dropout=0.3))
+        model.add(LSTM(100, dropout=0.2, recurrent_dropout=0.2))
         model.add(Dense(units=1, activation='sigmoid'))
         early_stopping = EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)
         model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-        model.fit(x_train, y_train, epochs=20, batch_size=64, validation_data=(x_valid, y_valid), callbacks=[early_stopping])
+        model.fit(x_train, y_train, epochs=10, batch_size=32, validation_data=(x_valid, y_valid), callbacks=[early_stopping])
 
         loss, accuracy = model.evaluate(x_test, y_test)
         print(f"Test veri kümesi üzerinde kayıp (loss): {loss}")
@@ -326,3 +336,80 @@ def dlPredict_LSTM(review_vector):
             print("Metin Sınıfı 0: Saldırganlık, zorbalık veya linç tespit edilemedi.")
     except FileNotFoundError:
         print(f"İlgili model dosyası bulunamadı. Lütfen dlModel_LSTM() fonksiyonunu kullandığınızdan ve dosya varlığından emin olun.")
+
+
+
+
+
+
+
+
+
+
+
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------
+tokenizer = Tokenizer(num_words=5000)
+def train_LSTM(x_train, y_train, x_test, y_test, x_valid, y_valid):
+    if os.path.exists("models/Model_LSTM.keras"):
+        print(f"Model dosyası zaten mevcut. predict fonksiyonunu kullanabilirsiniz.")
+        return
+    else:
+        x = np.concatenate((x_train, x_test, x_valid), axis=0)
+        y = np.concatenate((y_train, y_test, y_valid), axis=0)
+
+        tokenizer.fit_on_texts(x)
+
+        with open("models/tokenizer.pkl", "wb") as f:
+            pickle.dump(tokenizer, f)
+
+        x = tokenizer.texts_to_sequences(x)
+        x = pad_sequences(x, maxlen=100)
+
+        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=42)
+
+        model = Sequential()
+        model.add(Embedding(input_dim=5000, output_dim=100, input_length=100))
+        model.add(Bidirectional(LSTM(128, dropout=0.3, recurrent_dropout=0.3, return_sequences=True)))
+        model.add(SpatialDropout1D(0.2))
+        model.add(Bidirectional(LSTM(128, dropout=0.3, recurrent_dropout=0.3)))
+        model.add(Dense(1, activation='sigmoid'))
+        model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+        model.fit(x_train, y_train, epochs=5, validation_split=0.1, batch_size=32)
+
+        loss, accuracy = model.evaluate(x_test, y_test)
+        print(f"Test veri kümesi üzerinde kayıp (loss): {loss}")
+        print(f"Test veri kümesi üzerinde doğruluk (accuracy): {accuracy}")
+
+        y_pred = model.predict(x_test)
+        y_pred = [1 if pred >= 0.5 else 0 for pred in y_pred]
+        cm = confusion_matrix(y_test, y_pred)
+        print(f"Confusion Matrix: ")
+        print(cm)
+        Visualize.showConfusionMatrix(cm)
+
+        model.save("models/Model_LSTM.keras")
+
+
+def predict_LSTM(review):
+    try:
+        model = load_model("models/Model_LSTM.keras")
+
+        with open("models/tokenizer.pkl", "rb") as f:
+            tokenizer = pickle.load(f)
+
+        review_seq = tokenizer.texts_to_sequences([review])
+        review_pad = pad_sequences(review_seq, maxlen=100)
+        review_pad = np.array(review_pad)
+
+        prediction = model.predict(review_pad)
+        prediction = (prediction >= 0.5).astype(int)[0][0]
+
+        if prediction == 1:
+            print(f"Metin Sınıfı 1: Saldırganlık, zorbalık veya linç tespit edildi.")
+        else:
+            print("Metin Sınıfı 0: Saldırganlık, zorbalık veya linç tespit edilemedi.")
+    except FileNotFoundError:
+        print(
+            f"İlgili model dosyası bulunamadı. Lütfen train_LSTM() fonksiyonunu kullandığınızdan ve dosya varlığından emin olun.")
