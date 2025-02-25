@@ -1,4 +1,4 @@
-# YaHYaS (Ya hayır konuş ya sus)
+# yhys (Ya hayır konuş ya sus)
 
 ## İçindekiler
 - [Giriş](#giriş)
